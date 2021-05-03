@@ -1,0 +1,103 @@
+body {
+    margin: 0;
+}
+
+.page-layout {
+    display: flex;
+    flex-direction: column;
+    .content {
+        align-self: center;
+    }
+    .page-header {
+        background-color: #0186df;
+    }
+}
+
+.sign-up-container {
+    width: 255px;
+    height: 219px;
+    padding: 35px;
+    box-shadow: 2px 2px 8px #888888;
+    border-radius: 10px;
+    .sign-up-label {
+        color: #202020;
+        font-size: 12px;
+        .sign-up-text-field {
+            input[type="text"], input[type="password"] {
+                border: none;
+                border-bottom: 1px solid #0186df;
+                width: 240px;
+                background-color: #ffffff !important;
+                &:focus {
+                    border-bottom-color: #0186df;
+                    background-color: #ffffff !important;
+                }
+            }
+        }
+    }
+}
+
+.login-container {
+    width: 255px;
+    height: 160px;
+    padding: 35px;
+    box-shadow: 2px 2px 8px #888888;
+    border-radius: 10px;
+    .login-label {
+        color: #202020;
+        font-size: 12px;
+        .login-text-field {
+            input[type="text"], input[type="password"] {
+                border: none;
+                border-bottom: 1px solid #0186df;
+                width: 240px;
+                background-color: #ffffff !important;
+                &:focus {
+                    border-bottom-color: #0186df;
+                    background-color: #ffffff !important;
+                }
+            }
+        }
+    }
+}
+
+.login-button, .sign-up-button, .sign-out-button {
+    padding: 5px 25px;
+    color: #0186df;
+    font-size: 14px;
+    border: #0186df 1px solid;
+    border-radius: 5px;
+    display: block;
+    margin: 25px auto;
+    cursor: pointer;
+    background: transparent;
+}
+
+.sign-out-button {
+    color: #ffffff;
+    border: #ffffff 1px solid;
+}
+
+.login-link, .sign-up-link {
+    font-size: 16px;
+    color: #0186df;
+    text-align: center;
+}
+
+.logo {
+    font-size: 50px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 25px;
+}
+
+a {
+    text-decoration: none;
+    &:focus {
+        text-decoration: none;
+    }
+}
+
+.float-right {
+    float: right;
+}
