@@ -9,6 +9,8 @@ export const userLogin = (credentials) => {
         },
         withCredentials: true,
         data: credentials
+    }).then(({data}) => {
+        return data
     });
 }
 
@@ -19,6 +21,8 @@ export const userLogout = () => {
             'Content-Type': 'application/json'
         },
         withCredentials: true
+    }).then(({data}) => {
+        return data
     });
 }
 
@@ -40,5 +44,10 @@ export const isLoggedIn = () => {
             'Content-Type': 'application/json'
         },
         withCredentials: true
+    }).then(({data}) => {
+        if (!data) {
+            return { loggedIn: data.loggedIn, user: {} };
+        }
+        return data;
     });
 }

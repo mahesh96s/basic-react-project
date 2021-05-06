@@ -1,6 +1,7 @@
 import { Link, navigate } from '@reach/router';
 import React, { Component } from 'react';
 import { userLogin } from '../../../services/authAPI';
+import { UserContext } from '../../../services/UserContext';
 
 class Login extends Component {
     constructor(props) {
@@ -14,7 +15,9 @@ class Login extends Component {
 
     loginSubmit(event) {
         event.preventDefault();
-        userLogin(this.state).then(() => {
+        userLogin(this.state).then(data => {
+            const { updateUser } = this.context;
+            updateUser({loggedIn: true, user: data});
             navigate('dashboard');
         }, err => {
             console.log(err);
@@ -46,5 +49,7 @@ class Login extends Component {
         );
     }
 }
+
+Login.contextType = UserContext;
 
 export default Login;
