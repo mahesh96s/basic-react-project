@@ -17,13 +17,15 @@ class App extends Component {
         <UserContextProvider>
           <div className="page-layout">
             <Header />
-            <Router>
-              <Home path="/" />
-              <Login path="login" />
-              <SignUp path="sign-up"/>
-              <ProtectedRoute path="dashboard" component={Dashboard}/>
-              <PageNotFound default />
-            </Router>
+            <div className="content">
+              <Router>
+                <Home path="/" />
+                <Login path="login" />
+                <SignUp path="sign-up"/>
+                <ProtectedRoute path="dashboard" component={Dashboard}/>
+                <PageNotFound default />
+              </Router>
+            </div>
           </div>
         </UserContextProvider>
       </React.StrictMode>

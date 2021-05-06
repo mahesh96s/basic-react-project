@@ -26,24 +26,26 @@ class Login extends Component {
 
     render () {
         return (
-            <div className="login-container">
-                <form onSubmit={this.loginSubmit}>
-                    <label className="login-label">
-                        Email
-                        <div className="login-text-field">
-                            <input type="text" value={this.state.email} onChange={(event => this.setState({email: event.target.value}))}/>
-                        </div>
-                    </label>
-                    <label className="login-label">
-                        Password
-                        <div className="login-text-field">
-                            <input type="password" value={this.state.password} onChange={(event => this.setState({password: event.target.value}))}/>
-                        </div>
-                    </label>
-                    <input className="login-button" type="submit" value="Login" />
-                </form>
-                <div className="sign-up-link">
-                    <Link to='/sign-up'>create new account</Link>
+            <div className="login-page">
+                <div className="login-container">
+                    <form onSubmit={this.loginSubmit}>
+                        <label className="login-label">
+                            Email
+                            <div className="login-text-field">
+                                <input type="text" value={this.state.email} onChange={(event => this.setState({email: event.target.value}))}/>
+                            </div>
+                        </label>
+                        <label className="login-label">
+                            Password
+                            <div className="login-text-field">
+                                <input type="password" value={this.state.password} onChange={(event => this.setState({password: event.target.value}))}/>
+                            </div>
+                        </label>
+                        <input className="login-button" type="submit" value="Login" />
+                    </form>
+                    <div className="sign-up-link">
+                        <Link to='/sign-up'>create new account</Link>
+                    </div>
                 </div>
             </div>
         );

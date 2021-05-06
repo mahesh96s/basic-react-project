@@ -6,55 +6,61 @@ body {
     display: flex;
     flex-direction: column;
     .content {
-        align-self: center;
+        height: 100vh;
     }
     .page-header {
         background-color: #0186df;
     }
 }
 
-.sign-up-container {
-    width: 255px;
-    height: 219px;
-    padding: 35px;
-    box-shadow: 2px 2px 8px #888888;
-    border-radius: 10px;
-    .sign-up-label {
-        color: #202020;
-        font-size: 12px;
-        .sign-up-text-field {
-            input[type="text"], input[type="password"] {
-                border: none;
-                border-bottom: 1px solid #0186df;
-                width: 240px;
-                background-color: #ffffff !important;
-                &:focus {
-                    border-bottom-color: #0186df;
+.login-page, .sign-up-page {
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .sign-up-container {
+        width: 255px;
+        height: 219px;
+        padding: 35px;
+        box-shadow: 2px 2px 8px #888888;
+        border-radius: 10px;
+        .sign-up-label {
+            color: #202020;
+            font-size: 12px;
+            .sign-up-text-field {
+                input[type="text"], input[type="password"] {
+                    border: none;
+                    border-bottom: 1px solid #0186df;
+                    width: 240px;
                     background-color: #ffffff !important;
+                    &:focus {
+                        border-bottom-color: #0186df;
+                        background-color: #ffffff !important;
+                    }
                 }
             }
         }
     }
-}
 
-.login-container {
-    width: 255px;
-    height: 160px;
-    padding: 35px;
-    box-shadow: 2px 2px 8px #888888;
-    border-radius: 10px;
-    .login-label {
-        color: #202020;
-        font-size: 12px;
-        .login-text-field {
-            input[type="text"], input[type="password"] {
-                border: none;
-                border-bottom: 1px solid #0186df;
-                width: 240px;
-                background-color: #ffffff !important;
-                &:focus {
-                    border-bottom-color: #0186df;
+    .login-container {
+        width: 255px;
+        height: 160px;
+        padding: 35px;
+        box-shadow: 2px 2px 8px #888888;
+        border-radius: 10px;
+        .login-label {
+            color: #202020;
+            font-size: 12px;
+            .login-text-field {
+                input[type="text"], input[type="password"] {
+                    border: none;
+                    border-bottom: 1px solid #0186df;
+                    width: 240px;
                     background-color: #ffffff !important;
+                    &:focus {
+                        border-bottom-color: #0186df;
+                        background-color: #ffffff !important;
+                    }
                 }
             }
         }
@@ -113,4 +119,8 @@ a {
         color: #5a646b;
         margin-left: 10px;
     }
+}
+
+.dashboard {
+    font-size: 30px;
 }
