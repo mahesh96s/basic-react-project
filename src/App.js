@@ -1,5 +1,5 @@
 import { Router } from '@reach/router';
-import React, { Component } from 'react';
+import React from 'react';
 import { render } from 'react-dom';
 import Header from './components/layout/header/Header';
 import Login from './components/auth/login/Login';
@@ -10,27 +10,25 @@ import ProtectedRoute from './ProtectedRoute';
 import PageNotFound from './components/page-not-found/PageNotFound';
 import Home from './components/home/Home';
 
-class App extends Component {
-  render() {
-    return (
-      <React.StrictMode>
-        <UserContextProvider>
-          <div className="page-layout">
-            <Header />
-            <div className="content">
-              <Router>
-                <Home path="/" />
-                <Login path="login" />
-                <SignUp path="sign-up"/>
-                <ProtectedRoute path="dashboard" component={Dashboard}/>
-                <PageNotFound default />
-              </Router>
-            </div>
+const App = () => {
+  return (
+    <React.StrictMode>
+      <UserContextProvider>
+        <div className="page-layout">
+          <Header />
+          <div className="content">
+            <Router>
+              <Home path="/" />
+              <Login path="login" />
+              <SignUp path="sign-up"/>
+              <ProtectedRoute path="dashboard" component={Dashboard}/>
+              <PageNotFound default />
+            </Router>
           </div>
-        </UserContextProvider>
-      </React.StrictMode>
-    )
-  }
+        </div>
+      </UserContextProvider>
+    </React.StrictMode>
+  )
 }
 
 render(<App />, document.getElementById("root"));

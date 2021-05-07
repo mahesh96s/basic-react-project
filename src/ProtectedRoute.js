@@ -3,8 +3,8 @@ import { Redirect } from '@reach/router';
 import { UserContext } from './services/UserContext';
 
 const ProtectedRoute = ({ path: path, component: Component }) => {
-    const user = useContext(UserContext);
-    if(user.loggedIn) {
+    const { currentUser } = useContext(UserContext);
+    if(currentUser && currentUser.loggedIn) {
         return (<Component path={path}/>)
     } else {
         return (<Redirect noThrow to="/login" />)

@@ -3,8 +3,8 @@ import { Redirect } from '@reach/router';
 import { UserContext } from '../../services/UserContext';
 
 const Home = () => {
-    const user = useContext(UserContext);
-    if (user.loggedIn) {
+    const { currentUser } = useContext(UserContext);
+    if (currentUser && currentUser.loggedIn) {
         return (<Redirect noThrow to="/dashboard" />)
     }
     return (<Redirect noThrow to="/login" />)

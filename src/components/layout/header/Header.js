@@ -1,43 +1,34 @@
-import React, { Component } from 'react';
+import React, {useContext} from 'react';
 import { navigate } from '@reach/router';
 import { userLogout } from '../../../services/authAPI';
 import { UserContext } from '../../../services/UserContext';
 
-class Header extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-        this.signOut = this.signOut.bind(this);
-    }
+const Header = () => {
+    const { currentUser, setCurrentUser }  = useContext(UserContext);
 
-    signOut(event) {
-        event.preventDefault();
+    function signOut() {
         userLogout().then(() => {
-            const { updateUser } = this.context;
-            updateUser({loggedIn: false, user: {}});
+            setCurrentUser({loggedIn: false, user: {}});
             navigate('/login');
         });
     }
 
-    render () {
-        return (
-            <div className="page-header">
-                <span className="logo">
-                    One Plus
-                </span>
-                <UserContext.Consumer>
-                    {(user) => user && user.loggedIn ? (
-                            <span className="float-right">
-                                <button className="sign-out-button" onClick={this.signOut}>Sign Out</button>
-                            </span>
-                        ) : null
-                    }
-                </UserContext.Consumer>
-            </div>
-        );
-    }
+    return (
+        <div className="page-header">
+            <span className="logo">
+                One Plus
+            </span>
+            { currentUser && currentUser.loggedIn ? (
+                    <span className="float-right">
+                        <button className="sign-out-button" onClick={event => {
+                            event.preventDefault();
+                            signOut()
+                        }}>Sign Out</button>
+                    </span>
+                ) : null
+            }
+        </div>
+    );
 }
-
-Header.contextType = UserContext;
 
 export default Header;

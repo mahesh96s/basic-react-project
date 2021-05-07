@@ -1,34 +1,22 @@
-import React, { Component, createContext } from "react";
-import { isLoggedIn } from './authAPI';
+import React, { createContext, useState, useEffect } from "react";
+import { isLoggedIn } from "./authAPI";
 
-export const UserContext = createContext();
+export const UserContext = createContext([{}, () => {}]);
 
-class UserContextProvider extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loggedIn: false,
-            user: {}
-        }
-    }
+const UserContextProvider = ({children}) => {
+    const [currentUser, setCurrentUser] = useState({});
 
-    updateUser = (user) => {
-        this.setState(user);
-    };
-
-    componentDidMount() {
-        isLoggedIn().then(data => {
-            this.setState(data);
+    useEffect(() => {
+        return isLoggedIn().then(data => {
+            setCurrentUser(data);
         });
-    }
+    }, []);
 
-    render() {
-        return (
-            <UserContext.Provider value={{ ...this.state, updateUser: this.updateUser}}>
-                {this.props.children}
-            </UserContext.Provider>
-        )
-    }
+    return (
+        <UserContext.Provider value={{currentUser, setCurrentUser}}>
+            {children}
+        </UserContext.Provider>
+    )
 }
 
 export default UserContextProvider;
