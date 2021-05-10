@@ -1,13 +1,17 @@
 import axios from 'axios';
 import { environment } from '../environment/environment';
 
+const httpHeader = {
+    headers:  {
+        'Content-Type': 'application/json'
+    },
+    withCredentials: true
+}
+
 export const userLogin = (credentials) => {
     return axios(`${environment.API_URL}/sessions`, {
+        ...httpHeader,
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true,
         data: credentials
     }).then(({data}) => {
         return data
@@ -16,11 +20,8 @@ export const userLogin = (credentials) => {
 
 export const userLogout = () => {
     return axios(`${environment.API_URL}/sessions`, {
-        method: 'Delete',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true
+        ...httpHeader,
+        method: 'Delete'
     }).then(({data}) => {
         return data
     });
@@ -28,22 +29,16 @@ export const userLogout = () => {
 
 export const userSignUp = (credentials) => {
     return axios(`${environment.API_URL}/users`, {
+        ...httpHeader,
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true,
         data: credentials
     });
 }
 
 export const isLoggedIn = () => {
     return axios(`${environment.API_URL}/is_logged_in`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        withCredentials: true
+        ...httpHeader,
+        method: 'GET'
     }).then(({data}) => {
         if (!data) {
             return { loggedIn: data.loggedIn, user: {} };

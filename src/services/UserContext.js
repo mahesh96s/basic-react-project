@@ -4,17 +4,18 @@ import { isLoggedIn } from "./authAPI";
 export const UserContext = createContext([{}, () => {}]);
 
 const UserContextProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState();
 
     useEffect(() => {
-        return isLoggedIn().then(data => {
+        isLoggedIn().then(data => {
             setCurrentUser(data);
+            return data;
         });
     }, []);
 
     return (
         <UserContext.Provider value={{currentUser, setCurrentUser}}>
-            {children}
+            {currentUser && children}
         </UserContext.Provider>
     )
 }
