@@ -170,29 +170,88 @@ a {
     display: none;
 }
 
-.view-profile-container {
+.user-profile {
     background-color: white;
     width: 500px;
     padding: 15px;
     border-radius: 5px;
-    .close-buttons {
-        float: right;
+    .view-profile-container, .edit-profile-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .profile-action-buttons {
+            .edit-button, .close-button {
+                cursor: pointer;
+                color: white;
+                border-radius: 6px;
+                width: 70px;
+                height: 30px;
+                margin: 5px;
+                border: none;
+                background-color: #3F51B5;
+            }
+            .close-button {
+                background-color: #F44336;
+            }
+        }
+        .profile-details {
+            font-size: 16px;
+            padding: 20px 60px;
+            .profile-header {
+                text-align: center;
+            }
+            .profile-photo-preview {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                .profile-pic {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    border: 1px solid #202020;
+                }
+            }
+            .active {
+                color: #20b313;
+            }
+            .inactive {
+                color: #b31313;
+            }
+        }
+        .profile-label {
+            color: #202020;
+            font-size: 12px;
+            .profile-text-field {
+                input[type="text"],
+                input[type="email"] {
+                    border: none;
+                    border-bottom: 1px solid #0186df;
+                    width: 240px;
+                    background-color: #ffffff !important;
+                    &:focus {
+                        border-bottom-color: #0186df;
+                        background-color: #ffffff !important;
+                    }
+                }
+            }
+        }
+        .upload-picture-action {
+            .upload-button, .cancel-button {
+                cursor: pointer;
+                color: white;
+                border-radius: 6px;
+                width: 70px;
+                height: 30px;
+                margin: 5px;
+                border: none;
+                background-color: #3F51B5;
+            }
+            .cancel-button {
+                background-color: #F44336;
+            }
+        }
     }
-    .profile-details {
-        font-size: 16px;
-        padding: 20px 60px;
-        .profile-pic {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin: 5px 60px;
-            border: 1px solid #202020;
-        }
-        .active {
-            color: #20b313;
-        }
-        .inactive {
-            color: #b31313;
-        }
-    }
+
 }

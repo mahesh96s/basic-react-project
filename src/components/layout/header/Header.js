@@ -2,9 +2,8 @@ import React, {useContext, useState} from 'react';
 import { navigate } from '@reach/router';
 import { userLogout } from '../../../services/authAPI';
 import { UserContext } from '../../../services/UserContext';
-import Modal from '../../../modal/Modal';
 import user_alt_icon from '../../../assets/user_alt_icon.svg';
-import moment from 'moment';
+import ViewProfile from '../../user/ViewProfile';
 
 const Header = () => {
     const { currentUser, setCurrentUser }  = useContext(UserContext);
@@ -44,21 +43,8 @@ const Header = () => {
                 ) : null
             }
             { currentUser && currentUser.loggedIn && showUserProfileModal ? (
-                <Modal>
-                    <div className="view-profile-container">
-                        <div className="close-buttons">
-                            <button onClick={toggleUserProfileModal}>close</button>
-                        </div>
-                        <div className="profile-details">
-                            <h1 className="view-profile-header">{currentUser.user.firstName} {currentUser.user.lastName}</h1>
-                            <img className="profile-pic" src={getImage(currentUser.user)} alt="profile" />
-                            <div>Email: {currentUser.user.email}</div>
-                            <div>Status: {currentUser.user.active ? (<span className="active">Active</span>) : (<span>InActive</span>)}</div>
-                            <div>Last Login: {moment(currentUser.user.lastLogin).format('LL')}</div>
-                            <div>Created At: {moment(currentUser.user.createdAt).format('LL')}</div>
-                        </div>
-                    </div>
-                </Modal>) : null
+                <ViewProfile showUserProfileModal={showUserProfileModal} setShowUserProfileModal={setShowUserProfileModal} />
+                ) : null
             }
         </div>
     );
