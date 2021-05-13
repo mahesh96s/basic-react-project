@@ -51,8 +51,7 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
             const params = {
                 firstName: state.firstName,
                 lastName: state.lastName,
-                email: state.email,
-                password: state.password
+                email: state.email
             };
             updateUser(params, currentUser.user.id).then(data => {
                 setCurrentUser({loggedIn: true, user: data});
