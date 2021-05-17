@@ -22,7 +22,7 @@ const App = () => {
               <Login path="login" />
               <SignUp path="sign-up"/>
               <ProtectedRoute path="dashboard" component={Dashboard}/>
-              <PageNotFound default />
+              <PageNotFound default={true} />
             </Router>
           </div>
         </div>

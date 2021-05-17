@@ -1,14 +1,15 @@
-import React, {useContext, useState, useRef} from 'react';
+import React, {useContext, useState, useRef, FormEvent, ChangeEvent} from 'react';
 import { UserContext } from '../../services/UserContext';
 import Modal from '../../modal/Modal';
 import user_alt_icon from '../../assets/user_alt_icon.svg';
 import moment from 'moment';
 import { updateUser, updateUserProfilePhoto } from '../../services/userAPI';
+import { UserContextType, UserFormFieldError, UserFormFields } from '../../schema/User';
 
-const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
-    const { currentUser, setCurrentUser }  = useContext(UserContext);
+const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}: {showUserProfileModal: boolean, setShowUserProfileModal(showModal: boolean): void}) => {
+    const { currentUser, setCurrentUser }  = useContext(UserContext) as UserContextType;
     const [ profileEditMode, setProfileEditMode ] = useState(false);
-    const [ state, setState ] = useState({
+    const [ state, setState ] = useState<UserFormFields>({
         firstName: currentUser.user.firstName,
         lastName: currentUser.user.lastName,
         email: currentUser.user.email,
@@ -18,41 +19,37 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
             email: ''
         }
     });
-    const [ profilePicFile, setProfilePicFile ] = useState();
+    const [ profilePicFile, setProfilePicFile ] = useState<File | null>();
     const [ profileImageUrl, setProfileImageUrl ] = useState(currentUser.user.profileImageURL);
     const [ invalidFile, setInvalidFile ] = useState(false);
     const fileUploadInput = useRef(null);
     const emailRegExp = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
 
-    const formValidate = formField => {
+    const formValidate = (formField: UserFormFields) => {
         let formValid = true;
-        let formErrors = state.formErrors;
-        Object.entries(formField).forEach(([key, value]) => {
+        Object.entries(formField).map(([key, value]) => {
             if (value.length < 1) {
-                formErrors[key] = `${key.toLowerCase()} cannnot be empty`;
+                const fieldName = key.replace(/([A-Z])/g, "$1");
+                value = `${fieldName.charAt(0).toUpperCase()}${fieldName.slice(1)} cannot be empty`;
                 formValid = false;
             } else if (key === 'email' && !emailRegExp.test(value)) {
-                formErrors.email = 'Invalid email Id';
+                value = 'Invalid email Id';
                 formValid = false;
             } else if (key !== 'formErrors') {
-                formErrors[key] = '';
+                value = '';
             }
         });
-        setState((prevProps) => ({
-            ...prevProps,
-            formErrors
-        }));
+        setState(formField);
         return formValid;
     }
 
-    const saveProfile = (event) => {
+    const saveProfile = (event: FormEvent) => {
         event.preventDefault();
         if (formValidate(state)) {
             const params = {
                 firstName: state.firstName,
                 lastName: state.lastName,
-                email: state.email,
-                password: state.password
+                email: state.email
             };
             updateUser(params, currentUser.user.id).then(data => {
                 setCurrentUser({loggedIn: true, user: data});
@@ -64,16 +61,19 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
         }
     }
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        const { name, value } = event.target;
-        let formErrors = state.formErrors;
-        if (value.length < 1) {
-            formErrors[name] = `${name.toLowerCase()} cannnot be empty`;
-        } else if (name === 'email' && !emailRegExp.test(value)) {
-            formErrors.email = 'Invalid email Id';
+        const { name, value} = event.target;
+        const formErrors: UserFormFieldError = state.formErrors;
+        if (name === 'firstName') {
+            formErrors.firstName = value.length < 1 ? 'First name cannot be empty' : '';
+        } else if (name === 'lastName') {
+            formErrors.lastName = value.length < 1 ? 'Last name cannot be empty' : '';
         } else {
-            formErrors[name] = '';
+            formErrors.email = value.length < 1 ? 'Email cannot be empty' : '';
+            if (!emailRegExp.test(value)) {
+                formErrors.email = 'Invalid email Id';
+            }
         }
         setState((prevProps) => ({
           ...prevProps,
@@ -85,7 +85,7 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
 
     const toggleUserProfileModal = () => setShowUserProfileModal(!showUserProfileModal);
 
-    const getImage = (imageUrl) => {
+    const getImage = (imageUrl: string) => {
         if (imageUrl.endsWith('/profile-image/default.png')) {
             return user_alt_icon;
         }
@@ -94,7 +94,7 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
 
     const editProfile = () => setProfileEditMode(!profileEditMode);
 
-    const onProfileChange = event => {
+    const onProfileChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const file = event.target.files[0];
         if (file) {
@@ -106,7 +106,7 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = () => {
-                    setProfileImageUrl(reader.result);
+                    setProfileImageUrl(reader.result as string);
                 };
                 setProfilePicFile(file);
                 setInvalidFile(false);
@@ -153,7 +153,7 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}) => {
                                         Invalid File type
                                     </div>)
                                 }
-                                <input type="file" hidden name="userProfilePic" onChange={onProfileChange} ref={fileUploadInput} />
+                                <input type="file" hidden={true} name="userProfilePic" onChange={onProfileChange} ref={fileUploadInput} />
                                 { profilePicFile ? (
                                     <div className="upload-picture-action">
                                         <button className="upload-button" onClick={saveProfilePicture}>Save</button>

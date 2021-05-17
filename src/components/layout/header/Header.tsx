@@ -4,9 +4,10 @@ import { userLogout } from '../../../services/authAPI';
 import { UserContext } from '../../../services/UserContext';
 import user_alt_icon from '../../../assets/user_alt_icon.svg';
 import ViewProfile from '../../user/ViewProfile';
+import { User, UserContextType } from '../../../schema/User';
 
 const Header = () => {
-    const { currentUser, setCurrentUser }  = useContext(UserContext);
+    const { currentUser, setCurrentUser }  = useContext(UserContext) as UserContextType;
     const [ showUserProfileModal, setShowUserProfileModal ] = useState(false);
 
     function signOut() {
@@ -18,7 +19,7 @@ const Header = () => {
 
     const toggleUserProfileModal = () => setShowUserProfileModal(!showUserProfileModal);
 
-    function getImage(user) {
+    function getImage(user: User) {
         if (user.profileImageURL.endsWith('/profile-image/default.png')) {
             return user_alt_icon;
         }
