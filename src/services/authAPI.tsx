@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { environment } from '../environment/environment';
+import { UserFormFields } from '../schema/User';
 
 const httpHeader = {
     headers:  {
@@ -8,7 +9,7 @@ const httpHeader = {
     withCredentials: true
 }
 
-export const userLogin = (credentials) => {
+export const userLogin = (credentials: UserFormFields) => {
     return axios(`${environment.API_URL}/sessions`, {
         ...httpHeader,
         method: 'POST',
@@ -21,13 +22,13 @@ export const userLogin = (credentials) => {
 export const userLogout = () => {
     return axios(`${environment.API_URL}/sessions`, {
         ...httpHeader,
-        method: 'Delete'
+        method: 'DELETE'
     }).then(({data}) => {
         return data
     });
 }
 
-export const userSignUp = (credentials) => {
+export const userSignUp = (credentials: UserFormFields) => {
     return axios(`${environment.API_URL}/users`, {
         ...httpHeader,
         method: 'POST',

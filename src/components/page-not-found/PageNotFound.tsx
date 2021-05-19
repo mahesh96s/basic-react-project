@@ -1,6 +1,7 @@
+import { RouteComponentProps } from '@reach/router';
 import React from 'react';
 
-const PageNotFound = () => {
+const PageNotFound = ({ path } : RouteComponentProps) => {
     return (
         <div className="page-not-found">
             <span>404</span>

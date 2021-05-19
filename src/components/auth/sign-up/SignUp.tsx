@@ -1,10 +1,11 @@
-import { Link, navigate } from '@reach/router';
-import React, { useState } from 'react';
+import { Link, navigate, RouteComponentProps } from '@reach/router';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { UserFormFieldError, UserFormFields } from '../../../schema/User';
 import { userSignUp } from '../../../services/authAPI';
 
-const SignUp = () => {
+const SignUp = ({ path } : RouteComponentProps) => {
     const emailRegExp = RegExp(/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
-    const [state, setState] = useState({
+    const [state, setState] = useState<UserFormFields>({
         firstName: '',
         lastName: '',
         email: '',
@@ -17,28 +18,25 @@ const SignUp = () => {
         }
     });
 
-    const formValidate = formField => {
+    const formValidate = (formField: UserFormFields) => {
         let formValid = true;
-        let formErrors = state.formErrors;
-        Object.entries(formField).forEach(([key, value]) => {
+        Object.entries(formField).map(([key, value]) => {
             if (value.length < 1) {
-                formErrors[key] = `${key.toLowerCase()} cannnot be empty`;
+                const fieldName = key.replace(/([A-Z])/g, "$1");
+                value = `${fieldName.charAt(0).toUpperCase()}${fieldName.slice(1)} cannot be empty`;
                 formValid = false;
             } else if (key === 'email' && !emailRegExp.test(value)) {
-                formErrors.email = 'Invalid email Id';
+                value = 'Invalid email Id';
                 formValid = false;
             } else if (key !== 'formErrors') {
-                formErrors[key] = '';
+                value = '';
             }
         });
-        setState((prevProps) => ({
-            ...prevProps,
-            formErrors
-        }));
+        setState(formField);
         return formValid;
     }
 
-    const signUpSubmit = (event) => {
+    const signUpSubmit = (event: FormEvent) => {
         event.preventDefault();
         if (formValidate(state)) {
             const params = {
@@ -55,16 +53,21 @@ const SignUp = () => {
         }
     }
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const { name, value } = event.target;
-        let formErrors = state.formErrors;
-        if (value.length < 1) {
-            formErrors[name] = `${name.toLowerCase()} cannnot be empty`;
-        } else if (name === 'email' && !emailRegExp.test(value)) {
-            formErrors.email = 'Invalid email Id';
+        const formErrors: UserFormFieldError = state.formErrors;
+        if (name === 'firstName') {
+            formErrors.firstName = value.length < 1 ? 'First name cannot be empty' : '';
+        } else if (name === 'lastName') {
+            formErrors.lastName = value.length < 1 ? 'Last name cannot be empty' : '';
+        } else if (name === 'email') {
+            formErrors.email = value.length < 1 ? 'Email cannot be empty' : '';
+            if (!emailRegExp.test(value)) {
+                formErrors.email = 'Invalid email Id';
+            }
         } else {
-            formErrors[name] = '';
+            formErrors.password = value.length < 1 ? 'Password cannot be empty' : '';
         }
         setState((prevProps) => ({
           ...prevProps,
