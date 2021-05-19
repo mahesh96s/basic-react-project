@@ -36,7 +36,7 @@ export const getUsersList = (credentials: UserFilterParams) => {
     return axios(`${environment.API_URL}/users`, {
         ...httpHeader,
         method: 'GET',
-        data: credentials
+        params: credentials
     }).then(({data}) => {
         return data
     });

@@ -42,7 +42,7 @@ export interface UserContextType {
 }
 
 export interface UserFilterParams {
-    pageSize: number;
-    currentPage: number;
-    q: string;
+    pageSize?: number;
+    currentPage?: number;
+    q?: string;
 }

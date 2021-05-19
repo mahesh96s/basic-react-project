@@ -95,7 +95,7 @@ body {
     img {
         width: 35px;
         height: 35px;
-        margin: 10px;
+        margin: 15px;
         border: 1px solid #202020;
         border-radius: 50%;
         background-color: aliceblue;
@@ -155,12 +155,57 @@ a {
 
 .user-list {
     padding: 20px;
-    .card {
-        flex: 0 0 25%;
+    .user-list-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: 35px;
+        grid-row-gap: 25px;
+        .card {
+            flex: 0 0 25%;
+            .active {
+                color: #20b313;
+            }
+            .inactive {
+                color: #b31313;
+            }
+        }
+        .card-img-top {
+            width: 175px;
+            height: 175px;
+            align-self: center;
+            border-radius: 50%;
+            margin-top: 15px;
+        }
     }
-    .card-img-top {
-        width: 100px;
-        height: 100px;
+}
+
+.workout-list {
+    padding: 20px;
+    .workout-list-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-column-gap: 25px;
+        grid-row-gap: 25px;
+        .card {
+            flex: 0 0 25%;
+            .workout-status {
+                font-size: 9px;
+                border: 1px solid #202020;
+                border-radius: 15px;
+                padding: 2px 8px;
+                margin: 0 10px;
+                .active {
+                    color: #20b313;
+                }
+                .inactive {
+                    color: #b31313;
+                }
+            }
+        }
+        .card-img-top {
+            width: 100%;
+            height: 175px;
+        }
     }
 }
 
@@ -278,9 +323,9 @@ a {
     justify-content: center;
     width: 100%;
     .side-nav-bar {
-        width: 200px;
-        background-color: lightgray;
-        align-self: stretch;
+        .side-nav-bar-container {
+            height: 100%;
+        }
         .side-nav-links {
             margin: 15px 0;
             a {
@@ -293,4 +338,8 @@ a {
             }
         }
     }
+}
+
+.text-align-center {
+    text-align: center;
 }

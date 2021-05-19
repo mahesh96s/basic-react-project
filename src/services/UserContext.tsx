@@ -9,7 +9,6 @@ const UserContextProvider = ({children}: { children: ReactChild }) => {
 
     useEffect(() => {
         isLoggedIn().then(data => {
-            console.log('-------------', data);
             setCurrentUser(data);
             return data;
         }, err => {
