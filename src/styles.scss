@@ -197,12 +197,12 @@ a {
         display: flex;
         flex-direction: row;
         padding: 10px 0;
+        justify-content: space-between;
         border-bottom: 1px solid #0186df;
         margin-bottom: 15px;
         .workout-title {
             font-size: 20px;
             font-weight: 600;
-            flex: 0 0 40%;
         }
     }
     .workout-list-container {
@@ -377,6 +377,48 @@ a {
                 border-bottom-color: #0186df;
                 background-color: #ffffff !important;
             }
+        }
+    }
+}
+
+.filter-container {
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #202020;
+    z-index: 1000;
+    background-color: #ffffff;
+    width: 400px;
+    .filter-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .filter-elements {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 5px 0;
+        .date-label {
+            display: flex;
+            .date-field-name {
+                flex: 0 0 25%;
+            }
+            .date-field {
+                margin-left: 10px;
+            }
+        }
+        .checkbox-label {
+            display: flex;
+            .checkbox-field-name {
+                flex: 0 0 25%;
+            }
+            .checkbox-field {
+                margin-left: 10px;
+            }
+        }
+    }
+    .filter-footer {
+        .action-button {
+            margin: 5px;
         }
     }
 }
