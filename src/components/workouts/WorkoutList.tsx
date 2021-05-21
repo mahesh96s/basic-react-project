@@ -47,7 +47,7 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
         filterParams.currentPage = 1;
         setWorkoutFilterParams(filterParams);
         getWorkouts();
-    }, [searchValue, setSearchValue]);
+    }, [workoutFilterParams, setWorkoutFilterParams, searchValue, setSearchValue]);
 
     return (
         <div className="workout-list">
@@ -56,6 +56,7 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
                     Workouts
                 </div>
                 <SearchParams searchValue={searchValue} setSearchValue={setSearchValue}/>
+                <WorkoutFilters filterParams={workoutFilterParams} setFilterParams={setWorkoutFilterParams} />
             </div>
             { workoutsList.length === 0 ? (
 				<h1>No Workouts found</h1>

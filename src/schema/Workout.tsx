@@ -3,10 +3,11 @@ export interface WorkoutFilterParams {
     currentPage?: number;
     searchText?: string;
     includeTags?: string;
-    createdBy?: number;
     status?: string;
     startDate?: string;
     endDate?: string;
+    bookmarked?: boolean;
+    active?: string;
 }
 
 export interface Workout {
