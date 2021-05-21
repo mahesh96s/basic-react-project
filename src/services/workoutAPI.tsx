@@ -10,10 +10,10 @@ const httpHeader = {
 }
 
 export const getWorkoutsList = (credentials: WorkoutFilterParams) => {
-    return axios(`${environment.API_URL}/workouts`, {
+    return axios(`${environment.API_URL}/workouts/search`, {
         ...httpHeader,
-        method: 'GET',
-        params: credentials
+        method: 'POST',
+        data: credentials
     }).then(({data}) => {
         return data
     });

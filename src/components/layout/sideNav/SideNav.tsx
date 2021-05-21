@@ -8,7 +8,7 @@ const SideNav = () => {
 
     if (currentUser && currentUser.loggedIn) {
         return (
-            <div className="side-nav-bar-container">
+            <div className="side-nav-bar-container col-2">
                 <div className="side-nav-links">
                     <Link to="/dashboard">Dashboard</Link>
                 </div>

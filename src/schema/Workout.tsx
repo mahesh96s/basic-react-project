@@ -1,7 +1,7 @@
 export interface WorkoutFilterParams {
     pageSize?: number;
     currentPage?: number;
-    q?: string;
+    searchText?: string;
     includeTags?: string;
     createdBy?: number;
     status?: string;
@@ -9,7 +9,7 @@ export interface WorkoutFilterParams {
     endDate?: string;
 }
 
-export interface Workouts {
+export interface Workout {
     id?: number;
     title?: string;
     description?: string;

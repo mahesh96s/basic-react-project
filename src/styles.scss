@@ -155,6 +155,18 @@ a {
 
 .user-list {
     padding: 20px;
+    .user-header {
+        display: flex;
+        flex-direction: row;
+        padding: 10px 0;
+        border-bottom: 1px solid #0186df;
+        margin-bottom: 15px;
+        .user-title {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 0 0 40%;
+        }
+    }
     .user-list-container {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -181,6 +193,18 @@ a {
 
 .workout-list {
     padding: 20px;
+    .workout-header {
+        display: flex;
+        flex-direction: row;
+        padding: 10px 0;
+        border-bottom: 1px solid #0186df;
+        margin-bottom: 15px;
+        .workout-title {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 0 0 40%;
+        }
+    }
     .workout-list-container {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -322,19 +346,17 @@ a {
     flex-direction: row;
     justify-content: center;
     width: 100%;
-    .side-nav-bar {
-        .side-nav-bar-container {
-            height: 100%;
-        }
-        .side-nav-links {
-            margin: 15px 0;
-            a {
-                color: #202020;
-                padding-left: 10px;
-                &:hover {
-                    color: #F44336;
-                    text-decoration: none;
-                }
+    .side-nav-bar-container {
+        height: 100%;
+    }
+    .side-nav-links {
+        margin: 15px 0;
+        a {
+            color: #202020;
+            padding-left: 10px;
+            &:hover {
+                color: #F44336;
+                text-decoration: none;
             }
         }
     }
@@ -342,4 +364,19 @@ a {
 
 .text-align-center {
     text-align: center;
+}
+
+.search-label {
+    .search-text-field {
+        input[type="text"] {
+            border: none;
+            border-bottom: 1px solid #0186df;
+            width: 240px;
+            background-color: #ffffff !important;
+            &:focus {
+                border-bottom-color: #0186df;
+                background-color: #ffffff !important;
+            }
+        }
+    }
 }

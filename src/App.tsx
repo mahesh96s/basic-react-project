@@ -21,9 +21,7 @@ const App = () => {
         <div className="page-layout">
           <Header />
           <div className="content-layout row">
-            <div className="side-nav-bar col-2">
-              <SideNav />
-            </div>
+            <SideNav />
             <div className="content col-10">
               <Router>
                 <Home path="/" />

@@ -1,27 +1,28 @@
 import { RouteComponentProps } from '@reach/router';
 import React, { useEffect, useState } from 'react';
-import { Card, Spinner } from 'react-bootstrap';
-import moment from 'moment';
 import { getWorkoutsList } from '../../services/workoutAPI';
-import { WorkoutFilterParams, Workouts } from '../../schema/Workout';
+import { WorkoutFilterParams, Workout } from '../../schema/Workout';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import SearchParams from '../shared/SearchParams';
+import WorkoutListItem from './WorkoutListItem';
 
 const WorkoutList = ({ path } : RouteComponentProps) => {
     const [ workoutsList, setWorkoutsList ] = useState([]);
     const [ workoutFilterParams, setWorkoutFilterParams ] = useState<WorkoutFilterParams>({
         pageSize: 20,
         currentPage: 1,
-        q: ''
+        searchText: ''
     });
-    const [ totalItems, setTotalItems ] = useState<number>(0);
+    const [ totalItems, setTotalItems ] = useState(0);
+    const [ searchValue, setSearchValue ] = useState('');
 
     const getWorkouts = (scrollEvent?: boolean) => {
+        const filterParams = workoutFilterParams;
         if (scrollEvent) {
-            setWorkoutFilterParams((filterParams) => {
-                filterParams.currentPage = filterParams.currentPage + 1;
-                return filterParams;
-            });
+            filterParams.currentPage = filterParams.currentPage + 1;
         }
+        filterParams.searchText = searchValue.length > 0 ? searchValue: '';
+        setWorkoutFilterParams(filterParams);
         getWorkoutsList(workoutFilterParams).then(data => {
             setTotalItems(data.totalItems);
             if (scrollEvent) {
@@ -39,16 +40,22 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
         }
     }
 
-    const getImage = (imageUrl: string) => {
-        return imageUrl;
-    }
 
     useEffect(() => {
+        const filterParams = workoutFilterParams;
+        filterParams.currentPage = 1;
+        setWorkoutFilterParams(filterParams);
         getWorkouts();
-    }, []);
+    }, [searchValue, setSearchValue]);
 
     return (
         <div className="workout-list">
+            <div className="workout-header">
+                <div className="workout-title">
+                    Workouts
+                </div>
+                <SearchParams searchValue={searchValue} setSearchValue={setSearchValue}/>
+            </div>
             { workoutsList.length === 0 ? (
 				<h1>No Workouts found</h1>
 			) : (
@@ -63,23 +70,9 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
                     }
                     >
                     <div className="workout-list-container">
-                        { workoutsList.map((workout: Workouts, index: number) => {
+                        { workoutsList.map((workout: Workout, index: number) => {
                             return (
-                                <Card key={index}>
-                                    <Card.Img variant="top" src={getImage(workout.videoThumbnailUrl)} alt="Profile Pic" />
-                                    <Card.Body>
-                                        <Card.Title>
-                                            { workout.title }
-                                            <span className="workout-status">
-                                                { workout.active ? (<span className="active">Active</span>) : (<span className="inactive">InActive</span>)}
-                                            </span>
-                                        </Card.Title>
-                                        <div>{ workout.description }</div>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <small className="text-muted">Last updated {moment(workout.updated_at).format('LL')}</small>
-                                    </Card.Footer>
-                                </Card>
+                                <WorkoutListItem key={index} workout={workout} />
                             );
                         })}
                     </div>
