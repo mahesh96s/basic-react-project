@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { getWorkoutsList } from '../../services/workoutAPI';
 import { WorkoutFilterParams, Workout } from '../../schema/Workout';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import WorkoutFilters from './WorkoutFilters';
 import SearchParams from '../shared/SearchParams';
 import WorkoutListItem from './WorkoutListItem';
 
