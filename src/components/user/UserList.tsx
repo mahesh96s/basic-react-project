@@ -1,11 +1,10 @@
 import { RouteComponentProps } from '@reach/router';
 import React, { useEffect, useState } from 'react';
 import { getUsersList } from '../../services/userAPI';
-import { Card } from 'react-bootstrap';
-import user_alt_icon from '../../assets/user_alt_icon.svg';
-import moment from 'moment';
 import { User } from '../../schema/User';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import SearchParams from '../shared/SearchParams';
+import UserListItem from './UserListItem';
 
 const UserList = ({ path } : RouteComponentProps) => {
     const [ usersList, setUsersList ] = useState([]);
@@ -15,6 +14,7 @@ const UserList = ({ path } : RouteComponentProps) => {
         q: ''
     });
     const [ totalItems, setTotalItems ] = useState<number>(0);
+    const [ searchValue, setSearchValue ] = useState('');
 
     const onScroll = () => {
         if (usersList.length < totalItems) {
@@ -23,12 +23,12 @@ const UserList = ({ path } : RouteComponentProps) => {
     }
 
     const getUsers = (scrollEvent?: boolean) => {
+        const filterParams = userParams;
         if (scrollEvent) {
-            setUserParams((filterParams) => {
-                filterParams.currentPage = filterParams.currentPage + 1;
-                return filterParams;
-            });
+            filterParams.currentPage = filterParams.currentPage + 1;
         }
+        filterParams.q = searchValue.length > 0 ? searchValue: '';
+        setUserParams(filterParams);
         getUsersList(userParams).then(data => {
             setTotalItems(data.totalItems);
             if (scrollEvent) {
@@ -40,19 +40,21 @@ const UserList = ({ path } : RouteComponentProps) => {
         });
     }
 
-    const getImage = (imageUrl: string) => {
-        if (imageUrl.endsWith('/profile-image/default.png')) {
-            return user_alt_icon;
-        }
-        return imageUrl;
-    }
-
     useEffect(() => {
+        const filterParams = userParams;
+        filterParams.currentPage = 1;
+        setUserParams(filterParams);
         getUsers();
-    }, []);
+    }, [searchValue, setSearchValue]);
 
     return (
         <div className="user-list">
+            <div className="user-header">
+                <div className="user-title">
+                    Users
+                </div>
+                <SearchParams searchValue={searchValue} setSearchValue={setSearchValue} />
+            </div>
             { usersList.length === 0 ? (
 				<h1>No Users found</h1>
 			) : (
@@ -69,22 +71,7 @@ const UserList = ({ path } : RouteComponentProps) => {
                     <div className="user-list-container">
                         { usersList.map((user: User) => {
                             return (
-                                <Card key={user.id}>
-                                    <Card.Img variant="top" src={getImage(user.profileImageURL)} alt="Profile Pic"/>
-                                    <Card.Body>
-                                        <Card.Title>{ user.firstName } { user.lastName }</Card.Title>
-                                        <div>
-                                            <div>Email: { user.email }</div>
-                                            <div>
-                                                Status: { user.active ? (<span className="active">Active</span>) : (<span className="inactive">InActive</span>)}
-                                            </div>
-                                            <div>Created At: {moment(user.createdAt).format('LL')}</div>
-                                        </div>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <small className="text-muted">Last updated {moment(user.lastLogin).format('LL')}</small>
-                                    </Card.Footer>
-                                </Card>
+                                <UserListItem key={user.id} user={user}/>
                             );
                         })}
                     </div>
