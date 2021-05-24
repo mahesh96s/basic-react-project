@@ -12,9 +12,11 @@ const SideNav = () => {
                 <div className="side-nav-links">
                     <Link to="/dashboard">Dashboard</Link>
                 </div>
-                <div className="side-nav-links">
-                    <Link to="/users">User</Link>
-                </div>
+                { currentUser.user.role.name === 'admin' &&
+                    <div className="side-nav-links">
+                        <Link to="/users">User</Link>
+                    </div>
+                }
                 <div className="side-nav-links">
                     <Link to="/workouts">Workouts</Link>
                 </div>

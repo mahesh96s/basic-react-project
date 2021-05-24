@@ -1,7 +1,8 @@
 import moment from 'moment';
-import React, { ChangeEvent, MouseEvent, useRef, useState } from 'react';
-import { Button, Overlay, Popover } from 'react-bootstrap';
-import { WorkoutFilterParams } from '../../schema/Workout';
+import React, { ChangeEvent, MouseEvent, useRef, useState, useEffect } from 'react';
+import { Button, Overlay } from 'react-bootstrap';
+import { MediaType, WorkoutFilterParams } from '../../schema/Workout';
+import { getMediaTypes } from '../../services/workoutAPI';
 
 interface FilterParams {
     filterParams: WorkoutFilterParams;
@@ -16,10 +17,28 @@ const WorkoutFilters = ({filterParams, setFilterParams}: FilterParams) => {
     const endDateLimit = { min: "2010-01-01", max: moment(new Date()).format('YYYY-MM-DD') };
     const [ activeStatus, setActiveStatus ] = useState(false);
     const [ inactiveStatus, setInactiveStatus ] = useState(false);
+    const [ videoType, setVideoType ] = useState(false);
+    const [ articleType, setArticleType ] = useState(false);
+    const [ mediaTypes, setMediaTypes ] = useState<MediaType[]>([]);
+
+    useEffect(() => {
+        getMediaTypes().then((data: MediaType[]) => {
+            setMediaTypes(data);
+        });
+    }, []);
 
     const handleClickEvent = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         setShowFilter(true);
+    }
+
+    const getMediaTypeByName = (mediaTypeName: string) => {
+        if (mediaTypeName === 'all') {
+            const filterMediaTypes = mediaTypes.map(mediaType => mediaType.id);
+            return filterMediaTypes;
+        }
+        const filterMediaType = mediaTypes.find(mediaType => mediaType.type === mediaTypeName);
+        return filterMediaType.id;
     }
 
     const handleCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +52,10 @@ const WorkoutFilters = ({filterParams, setFilterParams}: FilterParams) => {
         } else if (name === 'inActive') {
             params.active = "false";
             setInactiveStatus(checked);
+        } else if (name === 'video') {
+            setVideoType(checked);
+        } else if (name === 'article') {
+            setArticleType(checked);
         }
         setWorkoutFilterParams(params);
     }
@@ -62,6 +85,15 @@ const WorkoutFilters = ({filterParams, setFilterParams}: FilterParams) => {
         const params = Object.assign({}, workoutFilterParams);
         if ((activeStatus && inactiveStatus) || (!activeStatus && !inactiveStatus)) {
             delete params.active;
+        }
+        if (videoType && articleType) {
+            params.mediaTypeId = getMediaTypeByName('all');
+        } else if (videoType && !articleType) {
+            params.mediaTypeId = getMediaTypeByName('video');
+        } else if (!videoType && articleType) {
+            params.mediaTypeId = getMediaTypeByName('article')
+        } else if (!videoType && !articleType) {
+            delete params.mediaTypeId;
         }
         setFilterParams(params);
         setWorkoutFilterParams(params);
@@ -95,6 +127,22 @@ const WorkoutFilters = ({filterParams, setFilterParams}: FilterParams) => {
                     <div {...props} className="filter-container">
                         <div className="filter-title text-align-center">Workout Filter</div>
                         <div className="filter-elements">
+                            <label className="checkbox-label">
+                                <span className="checkbox-field-name">
+                                    Video:
+                                </span>
+                                <span className="checkbox-field">
+                                    <input type="checkbox" name="video" defaultChecked={videoType} onChange={handleCheckbox}/>
+                                </span>
+                            </label>
+                            <label className="checkbox-label">
+                                <span className="checkbox-field-name">
+                                    Article:
+                                </span>
+                                <span className="checkbox-field">
+                                    <input type="checkbox" name="article" defaultChecked={articleType} onChange={handleCheckbox}/>
+                                </span>
+                            </label>
                             <label className="date-label">
                                 <span className="date-field-name">
                                     Start date:

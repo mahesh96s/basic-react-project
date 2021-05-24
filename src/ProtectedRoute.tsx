@@ -4,10 +4,17 @@ import { UserContext } from './services/UserContext';
 
 const ProtectedRoute = ({ path: path, component: Component }: { path: string, component: ComponentState }) => {
     const { currentUser } = useContext(UserContext);
+    const adminPages = ['dashboard', 'users', 'workouts'];
+    const userPages = ['dashboard', 'workouts'];
     if(currentUser && currentUser.loggedIn) {
-        return (<Component path={path}/>)
+        if (currentUser.user.role.name === 'admin' && adminPages.some(pageName => pageName === path)) {
+            return (<Component path={path}/>);
+        } else if (currentUser.user.role.name === 'user' && userPages.some(pageName => pageName === path)) {
+            return (<Component path={path}/>);
+        }
+        return (<Redirect noThrow={true} to="/dashboard" />);
     } else {
-        return (<Redirect noThrow={true} to="/login" />)
+        return (<Redirect noThrow={true} to="/login" />);
     }
 }
 
