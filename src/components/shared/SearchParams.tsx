@@ -1,6 +1,4 @@
 import React, { ChangeEvent } from 'react';
-import { UserFilterParams } from '../../schema/User';
-import { WorkoutFilterParams } from '../../schema/Workout';
 
 interface SearchFilterParams {
     searchValue: string;

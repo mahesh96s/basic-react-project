@@ -422,3 +422,14 @@ a {
         }
     }
 }
+
+.description {
+    font-size: 14px;
+    .description-button {
+        border: none;
+        background: transparent;
+        padding: 0;
+        color: #0186df;
+        font-size: 14px;
+    }
+}

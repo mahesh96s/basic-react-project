@@ -18,3 +18,12 @@ export const getWorkoutsList = (credentials: WorkoutFilterParams) => {
         return data
     });
 }
+
+export const getMediaTypes = () => {
+    return axios(`${environment.API_URL}/mediaTypes`, {
+        ...httpHeader,
+        method: 'GET'
+    }).then(({data}) => {
+        return data
+    });
+}

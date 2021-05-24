@@ -8,6 +8,7 @@ export interface WorkoutFilterParams {
     endDate?: string;
     bookmarked?: boolean;
     active?: string;
+    mediaTypeId?: number | number[];
 }
 
 export interface Workout {
@@ -22,4 +23,11 @@ export interface Workout {
     updated_at?: string;
     created_at?: string;
     bookmarked?: boolean;
+    mediaTypeId?: number;
+    imageUrl?: string;
+}
+
+export interface MediaType {
+    id?: number;
+    type?: string;
 }
