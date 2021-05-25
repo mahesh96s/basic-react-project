@@ -40,3 +40,9 @@ export interface UserContextType {
     currentUser: IsUserLoggedIn;
     setCurrentUser: (current: IsUserLoggedIn) => void;
 }
+
+export interface UserFilterParams {
+    pageSize?: number;
+    currentPage?: number;
+    q?: string;
+}

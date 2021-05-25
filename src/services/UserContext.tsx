@@ -11,6 +11,8 @@ const UserContextProvider = ({children}: { children: ReactChild }) => {
         isLoggedIn().then(data => {
             setCurrentUser(data);
             return data;
+        }, err => {
+            setCurrentUser({loggedIn: false, user: {}});
         });
     }, []);
 

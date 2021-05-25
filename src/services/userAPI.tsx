@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { environment } from '../environment/environment';
-import { UserFormFields } from '../schema/User';
+import { UserFilterParams, UserFormFields } from '../schema/User';
 
 const httpHeader = {
     headers:  {
@@ -27,6 +27,16 @@ export const updateUserProfilePhoto = (formData: FormData) => {
         withCredentials: true,
         method: 'POST',
         data: formData
+    }).then(({data}) => {
+        return data
+    });
+}
+
+export const getUsersList = (credentials: UserFilterParams) => {
+    return axios(`${environment.API_URL}/users`, {
+        ...httpHeader,
+        method: 'GET',
+        params: credentials
     }).then(({data}) => {
         return data
     });

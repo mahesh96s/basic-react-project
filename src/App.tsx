@@ -9,6 +9,10 @@ import UserContextProvider from './services/UserContext';
 import ProtectedRoute from './ProtectedRoute';
 import PageNotFound from './components/page-not-found/PageNotFound';
 import Home from './components/home/Home';
+import PublicRoute from './PublicRoute';
+import SideNav from './components/layout/sideNav/SideNav';
+import UserList from './components/user/UserList';
+import WorkoutList from './components/workouts/WorkoutList';
 
 const App = () => {
   return (
@@ -16,14 +20,21 @@ const App = () => {
       <UserContextProvider>
         <div className="page-layout">
           <Header />
-          <div className="content">
-            <Router>
-              <Home path="/" />
-              <Login path="login" />
-              <SignUp path="sign-up"/>
-              <ProtectedRoute path="dashboard" component={Dashboard}/>
-              <PageNotFound default={true} />
-            </Router>
+          <div className="content-layout row">
+            <div className="side-nav-bar col-2">
+              <SideNav />
+            </div>
+            <div className="content col-10">
+              <Router>
+                <Home path="/" />
+                <PublicRoute path="login" component={Login} />
+                <PublicRoute path="sign-up" component={SignUp} />
+                <ProtectedRoute path="dashboard" component={Dashboard} />
+                <ProtectedRoute path="users" component={UserList} />
+                <ProtectedRoute path="workouts" component={WorkoutList} />
+                <PageNotFound default={true} />
+              </Router>
+            </div>
           </div>
         </div>
       </UserContextProvider>
