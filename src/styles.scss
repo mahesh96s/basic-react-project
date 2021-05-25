@@ -42,6 +42,7 @@ body {
                     &:focus {
                         border-bottom-color: #0186df;
                         background-color: #ffffff !important;
+                        outline: none;
                     }
                 }
             }
@@ -69,6 +70,7 @@ body {
                     &:focus {
                         border-bottom-color: #0186df;
                         background-color: #ffffff !important;
+                        outline: none;
                     }
                 }
             }
@@ -318,6 +320,7 @@ a {
                     &:focus {
                         border-bottom-color: #0186df;
                         background-color: #ffffff !important;
+                        outline: none;
                     }
                 }
             }
@@ -376,6 +379,7 @@ a {
             &:focus {
                 border-bottom-color: #0186df;
                 background-color: #ffffff !important;
+                outline: none;
             }
         }
     }
@@ -404,6 +408,17 @@ a {
             }
             .date-field {
                 margin-left: 10px;
+                input[type="date"] {
+                    border: none;
+                    border-bottom: 1px solid #0186df;
+                    width: 200px;
+                    background-color: #ffffff !important;
+                    &:focus {
+                        border-bottom-color: #0186df;
+                        background-color: #ffffff !important;
+                        outline: none;
+                    }
+                }
             }
         }
         .checkbox-label {

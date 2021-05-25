@@ -53,7 +53,7 @@ const UserList = ({ path } : RouteComponentProps) => {
                 <div className="user-title">
                     Users
                 </div>
-                <SearchParams searchValue={searchValue} setSearchValue={setSearchValue} />
+                <SearchParams setSearchValue={setSearchValue} />
             </div>
             { usersList.length === 0 ? (
 				<h1>No Users found</h1>

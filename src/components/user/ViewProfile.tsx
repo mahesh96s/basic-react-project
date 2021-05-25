@@ -19,7 +19,7 @@ const ViewProfile = ({showUserProfileModal, setShowUserProfileModal}: {showUserP
             email: ''
         }
     });
-    const [ profilePicFile, setProfilePicFile ] = useState<File | null>();
+    const [ profilePicFile, setProfilePicFile ] = useState<File>();
     const [ profileImageUrl, setProfileImageUrl ] = useState(currentUser.user.profileImageURL);
     const [ invalidFile, setInvalidFile ] = useState(false);
     const fileUploadInput = useRef(null);
