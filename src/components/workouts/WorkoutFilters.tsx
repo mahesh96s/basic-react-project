@@ -113,7 +113,7 @@ const WorkoutFilters = ({filterParams, setFilterParams}: FilterParams) => {
     }
 
     return (
-        <div>
+        <>
             <Button variant="primary" ref={filterElement} onClick={handleClickEvent}>
                 Filter
             </Button>
@@ -194,7 +194,7 @@ const WorkoutFilters = ({filterParams, setFilterParams}: FilterParams) => {
                     </div>
                 )}
             </Overlay>
-        </div>
+        </>
     )
 }
 

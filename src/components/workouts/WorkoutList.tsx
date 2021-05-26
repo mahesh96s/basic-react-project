@@ -55,7 +55,7 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
                 <div className="workout-title">
                     Workouts
                 </div>
-                <SearchParams searchValue={searchValue} setSearchValue={setSearchValue}/>
+                <SearchParams setSearchValue={setSearchValue}/>
                 <WorkoutFilters filterParams={workoutFilterParams} setFilterParams={setWorkoutFilterParams} />
             </div>
             { workoutsList.length === 0 ? (
@@ -72,9 +72,9 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
                     }
                     >
                     <div className="workout-list-container">
-                        { workoutsList.map((workout: Workout, index: number) => {
+                        { workoutsList.map((workout: Workout) => {
                             return (
-                                <WorkoutListItem key={index} workout={workout} />
+                                <WorkoutListItem key={workout.id} workout={workout} />
                             );
                         })}
                     </div>

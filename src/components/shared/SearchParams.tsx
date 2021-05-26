@@ -1,24 +1,18 @@
 import React, { ChangeEvent } from 'react';
+import { debounce } from 'lodash';
 
-interface SearchFilterParams {
-    searchValue: string;
-    setSearchValue(searchValue: string) : void;
-}
+const SearchParams = ({setSearchValue}: {setSearchValue(searchValue: string) : void}) => {
 
-const SearchParams = ({searchValue, setSearchValue}: SearchFilterParams) => {
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        event.preventDefault();
-        setSearchValue(event.target.value);
-    };
+    const handleInputChange = debounce((event: ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value), 750);
 
     return (
-        <div>
+        <>
             <label className="search-label">
                 <div className="search-text-field">
-                    <input type="text" name="search" placeholder="Search" value={searchValue} onChange={handleInputChange}/>
+                    <input type="text" name="search" placeholder="Search" onChange={handleInputChange}/>
                 </div>
             </label>
-        </div>
+        </>
     )
 }
 
