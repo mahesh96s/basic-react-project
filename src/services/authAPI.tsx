@@ -23,8 +23,6 @@ export const userLogout = () => {
     return axios(`${environment.API_URL}/sessions`, {
         ...httpHeader,
         method: 'DELETE'
-    }).then(({data}) => {
-        return data
     });
 }
 

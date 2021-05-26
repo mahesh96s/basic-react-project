@@ -1,4 +1,4 @@
-import React, {useContext, useState, MouseEvent} from 'react';
+import React, {useContext, useState, MouseEvent, useCallback} from 'react';
 import { navigate } from '@reach/router';
 import { userLogout } from '../../../services/authAPI';
 import { UserContext } from '../../../services/UserContext';
@@ -22,7 +22,7 @@ const Header = () => {
         signOut()
     };
 
-    const toggleUserProfileModal = () => setShowUserProfileModal(!showUserProfileModal);
+    const toggleUserProfileModal = useCallback(() => setShowUserProfileModal(!showUserProfileModal), [ showUserProfileModal, setShowUserProfileModal ]);
 
     function getImage(user: User) {
         if (user.profileImageURL.endsWith('/profile-image/default.png')) {
