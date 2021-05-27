@@ -4,8 +4,8 @@ import { UserContext } from './services/UserContext';
 
 const ProtectedRoute = ({ path: path, component: Component }: { path: string, component: ComponentState }) => {
     const { currentUser } = useContext(UserContext);
-    const adminPages = ['dashboard', 'users', 'workouts'];
-    const userPages = ['dashboard', 'workouts'];
+    const adminPages = ['dashboard', 'users', 'workouts', 'feeds'];
+    const userPages = ['dashboard', 'workouts', 'feeds'];
     if(currentUser && currentUser.loggedIn) {
         if (currentUser.user.role.name === 'admin' && adminPages.some(pageName => pageName === path)) {
             return (<Component path={path}/>);

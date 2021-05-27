@@ -13,6 +13,7 @@ import PublicRoute from './PublicRoute';
 import SideNav from './components/layout/sideNav/SideNav';
 import UserList from './components/user/UserList';
 import WorkoutList from './components/workouts/WorkoutList';
+import FeedsList from './components/feeds/FeedsList';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
                 <ProtectedRoute path="dashboard" component={Dashboard} />
                 <ProtectedRoute path="users" component={UserList} />
                 <ProtectedRoute path="workouts" component={WorkoutList} />
+                <ProtectedRoute path="feeds" component={FeedsList} />
                 <PageNotFound default={true} />
               </Router>
             </div>

@@ -1,17 +1,9 @@
-import axios from 'axios';
 import { environment } from '../environment/environment';
 import { WorkoutFilterParams } from '../schema/Workout';
-
-const httpHeader = {
-    headers:  {
-        'Content-Type': 'application/json'
-    },
-    withCredentials: true
-}
+import axiosApiInstance from './interceptors';
 
 export const getWorkoutsList = (credentials: WorkoutFilterParams) => {
-    return axios(`${environment.API_URL}/workouts/search`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/workouts/search`, {
         method: 'POST',
         data: credentials
     }).then(({data}) => {
@@ -20,8 +12,7 @@ export const getWorkoutsList = (credentials: WorkoutFilterParams) => {
 }
 
 export const getMediaTypes = () => {
-    return axios(`${environment.API_URL}/mediaTypes`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/mediaTypes`, {
         method: 'GET'
     }).then(({data}) => {
         return data

@@ -20,6 +20,9 @@ const SideNav = () => {
                 <div className="side-nav-links">
                     <Link to="/workouts">Workouts</Link>
                 </div>
+                <div className="side-nav-links">
+                    <Link to="/feeds">Feeds</Link>
+                </div>
             </div>
         );
     }
