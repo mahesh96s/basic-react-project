@@ -16,13 +16,16 @@ const usePostList = (label: string) => {
                 setPostListData(posts);
             })
         }
-    }, [])
+    }, []);
 
-    const PostList = () => (
+    const PostList = ({ title }: { title: string }) => (
         <>
+            <div className="title">
+                { title }
+            </div>
             {  postListData.length === 0 ? (
-                    <div>
-                        No {label} Found
+                    <div className="message">
+                        { label === 'Posts' ? "No post exist for the user" : "You don't have any favourites post yet" }
                     </div>
                 ) : (
                     <Table striped={true} bordered={true}>

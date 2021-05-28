@@ -9,10 +9,10 @@ const FeedsList = ({ path } : RouteComponentProps) => {
     return (
         <div className="feeds-List-container">
             <div className="post-table">
-                <MyPostList />
+                <MyPostList title="My Posts" />
             </div>
             <div className="favourite-table">
-                <MyFavouritePostList />
+                <MyFavouritePostList title="My Favourites" />
             </div>
         </div>
     )
