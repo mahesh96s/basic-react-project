@@ -1,13 +1,14 @@
 import { RouteComponentProps } from '@reach/router';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { getUsersList } from '../../services/userAPI';
 import { User } from '../../schema/User';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import SearchParams from '../shared/SearchParams';
-import UserListItem from './UserListItem';
+import { Spinner } from 'react-bootstrap';
+const UserListItem = lazy(() => import('./UserListItem'));
 
 const UserList = ({ path } : RouteComponentProps) => {
-    const [ usersList, setUsersList ] = useState([]);
+    const [ usersList, setUsersList ] = useState<User[]>();
     const [ userParams, setUserParams ] = useState({
         pageSize: 20,
         currentPage: 1,
@@ -55,28 +56,32 @@ const UserList = ({ path } : RouteComponentProps) => {
                 </div>
                 <SearchParams setSearchValue={setSearchValue} />
             </div>
-            { usersList.length === 0 ? (
-				<h1>No Users found</h1>
-			) : (
-                <InfiniteScroll
-                    dataLength={ usersList.length }
-                    next={onScroll}
-                    hasMore={ usersList.length < totalItems }
-                    loader={
-                        <div className="text-align-center">
-                            <div>Loading ...</div>
-                        </div>
-                    }
-                    >
-                    <div className="user-list-container">
-                        { usersList.map((user: User) => {
-                            return (
-                                <UserListItem key={user.id} user={user}/>
-                            );
-                        })}
-                    </div>
-                </InfiniteScroll>
-			)}
+            <Suspense fallback={
+                <div className="load-spinner">
+                    <Spinner animation="border" variant="primary" />
+                </div>
+            }>
+                { usersList && (
+                    <InfiniteScroll
+                        dataLength={ usersList.length }
+                        next={onScroll}
+                        hasMore={ usersList.length < totalItems }
+                        loader={false}
+                        >
+                            { usersList.length === 0 ? (
+                                <h1>No Users found</h1>
+                            ) : (
+                                <div className="user-list-container">
+                                    { usersList.map((user: User) => {
+                                        return (
+                                            <UserListItem key={user.id} user={user}/>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                    </InfiniteScroll>
+                )}
+            </Suspense>
         </div>
     );
 }

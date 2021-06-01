@@ -1,14 +1,15 @@
 import { RouteComponentProps } from '@reach/router';
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { getWorkoutsList } from '../../services/workoutAPI';
 import { WorkoutFilterParams, Workout } from '../../schema/Workout';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import WorkoutFilters from './WorkoutFilters';
 import SearchParams from '../shared/SearchParams';
-import WorkoutListItem from './WorkoutListItem';
+import { Spinner } from 'react-bootstrap';
+const WorkoutListItem = lazy(() => import('./WorkoutListItem'));
 
 const WorkoutList = ({ path } : RouteComponentProps) => {
-    const [ workoutsList, setWorkoutsList ] = useState([]);
+    const [ workoutsList, setWorkoutsList ] = useState<Workout[]>();
     const [ workoutFilterParams, setWorkoutFilterParams ] = useState<WorkoutFilterParams>({
         pageSize: 20,
         currentPage: 1,
@@ -58,28 +59,32 @@ const WorkoutList = ({ path } : RouteComponentProps) => {
                 <SearchParams setSearchValue={setSearchValue}/>
                 <WorkoutFilters filterParams={workoutFilterParams} setFilterParams={setWorkoutFilterParams} />
             </div>
-            { workoutsList.length === 0 ? (
-				<h1>No Workouts found</h1>
-			) : (
-                <InfiniteScroll
-                    dataLength={ workoutsList.length }
-                    next={onScroll}
-                    hasMore={ workoutsList.length < totalItems }
-                    loader={
-                        <div className="text-align-center">
-                            <div>Loading ...</div>
-                        </div>
-                    }
-                    >
-                    <div className="workout-list-container">
-                        { workoutsList.map((workout: Workout) => {
-                            return (
-                                <WorkoutListItem key={workout.id} workout={workout} />
-                            );
-                        })}
-                    </div>
-                </InfiniteScroll>
-			)}
+            <Suspense fallback={
+                <div className="load-spinner">
+                    <Spinner animation="border" variant="primary" />
+                </div>
+            }>
+                { workoutsList && (
+                    <InfiniteScroll
+                        dataLength={ workoutsList.length }
+                        next={onScroll}
+                        hasMore={ workoutsList.length < totalItems }
+                        loader={false}
+                        >
+                        { workoutsList.length === 0 ? (
+                            <h1>No Workouts found</h1>
+                        ) : (
+                            <div className="workout-list-container">
+                                { workoutsList.map((workout: Workout) => {
+                                    return (
+                                        <WorkoutListItem key={workout.id} workout={workout} />
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </InfiniteScroll>
+                )}
+            </Suspense>
         </div>
     );
 }
