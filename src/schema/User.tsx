@@ -37,8 +37,8 @@ export interface UserFormFieldError {
 }
 
 export interface UserContextType {
-    currentUser: IsUserLoggedIn;
-    setCurrentUser: (current: IsUserLoggedIn) => void;
+    currentUser?: IsUserLoggedIn;
+    setCurrentUser?: (current: IsUserLoggedIn) => void;
 }
 
 export interface UserFilterParams {

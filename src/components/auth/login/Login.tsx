@@ -79,7 +79,7 @@ const Login = ({ path } : RouteComponentProps) => {
                             <input type="email" name="email" value={state.email} onChange={handleInputChange}/>
                         </div>
                         {state.formErrors!.email!.length > 0 && (
-                            <div className="error-message">
+                            <div data-testid="email-error-message" className="error-message">
                                 {state.formErrors!.email}
                             </div>)
                         }

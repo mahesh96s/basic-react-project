@@ -50,3 +50,5 @@ const App = () => {
 }
 
 render(<App />, document.getElementById("root"));
+
+export default App;

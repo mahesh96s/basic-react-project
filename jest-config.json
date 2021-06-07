@@ -1,0 +1,7 @@
+{
+    "transform": {
+      "\\.(png|svg)$": "jest-transform-stub",
+      "^.+\\.tsx?$": "babel-jest"
+    },
+    "testEnvironment": "jsdom"
+}

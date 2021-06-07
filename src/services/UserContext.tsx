@@ -2,10 +2,10 @@ import React, { createContext, useState, useEffect, ReactChild } from "react";
 import { IsUserLoggedIn, UserContextType } from "../schema/User";
 import { isLoggedIn } from "./authAPI";
 
-export const UserContext = createContext<UserContextType>(null);
+export const UserContext = createContext<UserContextType>({});
 
 const UserContextProvider = ({children}: { children: ReactChild }) => {
-    const [currentUser, setCurrentUser] = useState<IsUserLoggedIn>(null);
+    const [currentUser, setCurrentUser] = useState<IsUserLoggedIn>({});
 
     useEffect(() => {
         isLoggedIn().then(data => {
