@@ -4,12 +4,10 @@ import Login from './Login';
 import { userLogin } from '../../../services/authAPI';
 import UserContextProvider from '../../../services/UserContext';
 
-jest.mock("../../../services/authAPI", () => {
-    return {
-        isLoggedIn: jest.fn(() => Promise.resolve({loggedIn: false, user: {}})),
-        userLogin: jest.fn(() => Promise.resolve(userData))
-    };
-});
+jest.mock("../../../services/authAPI", () => ({
+    isLoggedIn: jest.fn(() => Promise.resolve({loggedIn: false, user: {}})),
+    userLogin: jest.fn(() => Promise.resolve(userData))
+}));
 
 const userData = {
     user: {
@@ -43,21 +41,24 @@ describe('login page', () => {
         act(() => {
             render(<UserContextProvider><Login /></UserContextProvider>);
         });
-        const emailInput = screen.getByLabelText('Email');
-        const passwordInput = screen.getByLabelText('Password');
+        const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
+        const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
         const submit = screen.getByRole('button', { name: 'Login' });
         fireEvent.change(emailInput, { target: { value: 'admin@junkyardgym.com' } });
         fireEvent.change(passwordInput, { target: { value: 'password' } });
         act(() => {
             fireEvent.click(submit);
         });
-        await waitFor(() => expect(userLogin).toHaveBeenCalledTimes(1));
+        await waitFor(() => {
+            expect(userLogin).toHaveBeenCalledTimes(1);
+            expect(userLogin).toHaveReturned();
+        });
     });
 
     test('It should set the input value', () => {
-        const componentElement = render(<Login />);
-        const emailInput = componentElement.getByLabelText('Email') as HTMLInputElement;
-        const passwordInput = componentElement.getByLabelText('Password') as HTMLInputElement;
+        render(<Login />);
+        const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
+        const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
         fireEvent.change(emailInput, { target: { value: 'admin@junkyardgym.com' } });
         fireEvent.change(passwordInput, { target: { value: 'p@ssw0rd' } });
         expect(emailInput.value).toBe('admin@junkyardgym.com');
@@ -68,7 +69,7 @@ describe('login page', () => {
         render(<Login />);
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
         fireEvent.change(emailInput, { target: { value: 'email' } });
-        await waitFor(() => expect(screen.getByTestId('email-error-message')).not.toBeEmptyDOMElement);
+        await waitFor(() => expect(screen.getByTestId('email-error-message')).toBeInTheDocument());
     });
 
 });

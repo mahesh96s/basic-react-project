@@ -3,5 +3,6 @@
       "\\.(png|svg)$": "jest-transform-stub",
       "^.+\\.tsx?$": "babel-jest"
     },
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/src/jest-setup.ts"]
 }

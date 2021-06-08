@@ -25,12 +25,10 @@ const userData = {
     }
 }
 
-jest.mock("../../../services/authAPI", () => {
-    return {
-        isLoggedIn: jest.fn(() => Promise.resolve(userData)),
-        userLogout: jest.fn(() => Promise.resolve())
-    };
-});
+jest.mock("../../../services/authAPI", () => ({
+    isLoggedIn: jest.fn(() => Promise.resolve(userData)),
+    userLogout: jest.fn(() => Promise.resolve())
+}));
 
 afterEach(cleanup);
 
@@ -38,6 +36,8 @@ describe('Header layout', () => {
 
     test('Rendering header without login', () => {
         render(<Header />);
+        const submitButton = screen.queryByText('submit');
+        expect(submitButton).not.toBeInTheDocument();
     });
 
     test('Rendering header with login', async () => {
@@ -45,7 +45,12 @@ describe('Header layout', () => {
             render(<UserContextProvider><Header /></UserContextProvider>);
         });
         const signOutButton = await screen.findByRole('button', { name: 'Sign out' });
-        await waitFor(() => expect(signOutButton).not.toBeEmptyDOMElement);
+        await waitFor(() => expect(signOutButton).toBeInTheDocument());
+    });
+
+    test('It should display Logo name', async () => {
+        render(<Header />);
+        expect(screen.queryByText('One Plus')).toBeInTheDocument();
     });
 
     test('clicking sign out button', async () => {
@@ -56,7 +61,9 @@ describe('Header layout', () => {
         act(() => {
             fireEvent.click(signOutButton);
         });
-        await waitFor(() => expect(userLogout).toHaveBeenCalledTimes(1));
+        await waitFor(() => {
+            expect(userLogout).toHaveBeenCalledTimes(1);
+        });
     });
 
 });
