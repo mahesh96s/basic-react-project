@@ -35,9 +35,10 @@ describe('login page', () => {
 
     test('Rendering login page', () => {
         render(<Login />);
+        expect(screen.getByText('create new account')).toBeInTheDocument();
     });
 
-    test('It should submit login form', async () => {
+    test('It should submit login form successfully', async () => {
         act(() => {
             render(<UserContextProvider><Login /></UserContextProvider>);
         });
