@@ -30,7 +30,10 @@ jest.mock("../../../services/authAPI", () => ({
     userLogout: jest.fn(() => Promise.resolve())
 }));
 
-afterEach(cleanup);
+afterEach(() => {
+    jest.clearAllMocks();
+    return cleanup;
+});
 
 describe('Header layout', () => {
 

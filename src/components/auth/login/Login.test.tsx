@@ -1,13 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { render, cleanup, fireEvent, act, waitFor, screen } from '@testing-library/react';
 import Login from './Login';
 import { userLogin } from '../../../services/authAPI';
-import UserContextProvider from '../../../services/UserContext';
+import UserContextProvider, { UserContext } from '../../../services/UserContext';
 
 jest.mock("../../../services/authAPI", () => ({
     isLoggedIn: jest.fn(() => Promise.resolve({loggedIn: false, user: {}})),
-    userLogin: jest.fn(() => Promise.resolve(userData))
+    userLogin: jest.fn((credentials) => {
+        if(credentials.email === 'admin@junkyardgym.com') {
+            return Promise.resolve(userData);
+        }
+        return Promise.reject({
+            message: 'Invalid email and password'
+        });
+    })
 }));
+
+const TestUser = () => {
+    const {currentUser} = useContext(UserContext);
+    return (
+        <>
+            { currentUser && currentUser.loggedIn &&
+                <>
+                    <span data-testid="user-name">{currentUser.user.firstName} {currentUser.user.lastName}</span>
+                    <span data-testid="email">{currentUser.user.email}</span>
+                </>
+            }
+        </>
+    )
+}
 
 const userData = {
     user: {
@@ -29,7 +50,10 @@ const userData = {
     }
 }
 
-afterEach(cleanup);
+afterEach(() => {
+    jest.clearAllMocks();
+    return cleanup;
+});
 
 describe('login page', () => {
 
@@ -40,7 +64,12 @@ describe('login page', () => {
 
     test('It should submit login form successfully', async () => {
         act(() => {
-            render(<UserContextProvider><Login /></UserContextProvider>);
+            render(<UserContextProvider>
+                        <>
+                            <Login />
+                            <TestUser />
+                        </>
+                    </UserContextProvider>);
         });
         const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
         const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
@@ -53,6 +82,27 @@ describe('login page', () => {
         await waitFor(() => {
             expect(userLogin).toHaveBeenCalledTimes(1);
             expect(userLogin).toHaveReturned();
+            expect((screen.getByTestId('user-name') as HTMLInputElement).textContent).toBe('JYG Admin');
+            expect((screen.getByTestId('email') as HTMLInputElement).textContent).toBe('admin@junkyardgym.com');
+        });
+    });
+
+    test('On submit it should fail when user enters invalid email', async () => {
+        act(() => {
+            render(<UserContextProvider><Login /></UserContextProvider>);
+        });
+        const emailInput = screen.getByLabelText('Email') as HTMLInputElement;
+        const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
+        const submit = screen.getByRole('button', { name: 'Login' });
+        fireEvent.change(emailInput, { target: { value: 'admin@jyg.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password' } });
+        act(() => {
+            fireEvent.click(submit);
+        });
+        await waitFor(() => {
+            expect(userLogin).toHaveBeenCalledTimes(1);
+            expect(userLogin).toHaveReturned();
+            expect(screen.getByText('Invalid email and password')).toBeInTheDocument();
         });
     });
 

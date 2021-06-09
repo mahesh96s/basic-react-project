@@ -8,6 +8,8 @@ export const userLogin = (credentials: UserFormFields) => {
         data: credentials
     }).then(({data}) => {
         return data
+    }).catch(({ response: {data} }) => {
+        return data;
     });
 }
 
