@@ -16,6 +16,7 @@
     "jsx": "react"
   },
   "include": [
-    "src/**/*"
+    "src/**/*",
+    "./jest-setup.ts"
   ]
 }

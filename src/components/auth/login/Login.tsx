@@ -15,6 +15,7 @@ const Login = ({ path } : RouteComponentProps) => {
             password: ''
         }
     });
+    const [loginErrorMessage, setLoginErrorMessage] = useState('');
 
     const formValidate = (formField: UserFormFields) => {
         let formValid = true;
@@ -46,7 +47,7 @@ const Login = ({ path } : RouteComponentProps) => {
                 setCurrentUser({loggedIn: true, user: data.user});
                 navigate('dashboard');
             }, err => {
-                console.log(err);
+                setLoginErrorMessage(err.message);
             });
         }
     }
@@ -67,6 +68,7 @@ const Login = ({ path } : RouteComponentProps) => {
             [name]: value,
             formErrors
         }));
+        setLoginErrorMessage('');
     };
 
     return (
@@ -79,7 +81,7 @@ const Login = ({ path } : RouteComponentProps) => {
                             <input type="email" name="email" value={state.email} onChange={handleInputChange}/>
                         </div>
                         {state.formErrors!.email!.length > 0 && (
-                            <div className="error-message">
+                            <div data-testid="email-error-message" className="error-message">
                                 {state.formErrors!.email}
                             </div>)
                         }
@@ -100,6 +102,11 @@ const Login = ({ path } : RouteComponentProps) => {
                 <div className="sign-up-link">
                     <Link to='/sign-up'>create new account</Link>
                 </div>
+                { loginErrorMessage.length > 0 && (
+                    <div className="text-align-center error-message">
+                        { loginErrorMessage }
+                    </div>)
+                }
             </div>
         </div>
     );
