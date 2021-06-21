@@ -1,17 +1,10 @@
-import axios from 'axios';
 import { environment } from '../environment/environment';
 import { UserFilterParams, UserFormFields } from '../schema/User';
+import axiosApiInstance from './interceptors';
 
-const httpHeader = {
-    headers:  {
-        'Content-Type': 'application/json'
-    },
-    withCredentials: true
-}
 
 export const updateUser = (credentials: UserFormFields, userId: number) => {
-    return axios(`${environment.API_URL}/users/${userId}`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/users/${userId}`, {
         method: 'PUT',
         data: credentials
     }).then(({data}) => {
@@ -20,11 +13,10 @@ export const updateUser = (credentials: UserFormFields, userId: number) => {
 }
 
 export const updateUserProfilePhoto = (formData: FormData) => {
-    return axios(`${environment.API_URL}/profile/photo`, {
+    return axiosApiInstance(`${environment.API_URL}/profile/photo`, {
         headers:  {
             'Content-Type': 'multipart/form-data'
         },
-        withCredentials: true,
         method: 'POST',
         data: formData
     }).then(({data}) => {
@@ -33,8 +25,16 @@ export const updateUserProfilePhoto = (formData: FormData) => {
 }
 
 export const getUsersList = (credentials: UserFilterParams) => {
-    return axios(`${environment.API_URL}/users`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/users`, {
+        method: 'GET',
+        params: credentials
+    }).then(({data}) => {
+        return data
+    });
+}
+
+export const getTrainersList = (credentials: UserFilterParams) => {
+    return axiosApiInstance(`${environment.API_URL}/trainers`, {
         method: 'GET',
         params: credentials
     }).then(({data}) => {

@@ -20,7 +20,7 @@ const WorkoutListItem = ({ workout }: {workout: Workout}) => {
                 <Card.Title>
                     { workout.title }
                     <span className="workout-status">
-                        { workout.active ? (<span className="active">Active</span>) : (<span className="inactive">InActive</span>)}
+                        <span className={ workout.active ? "active": "inactive" }>{ workout.active ? "Active": "Inactive" }</span>
                     </span>
                 </Card.Title>
                 <Description descriptionText={workout.description} />

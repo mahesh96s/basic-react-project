@@ -1,17 +1,9 @@
-import axios from 'axios';
 import { environment } from '../environment/environment';
 import { UserFormFields } from '../schema/User';
-
-const httpHeader = {
-    headers:  {
-        'Content-Type': 'application/json'
-    },
-    withCredentials: true
-}
+import axiosApiInstance from './interceptors';
 
 export const userLogin = (credentials: UserFormFields) => {
-    return axios(`${environment.API_URL}/sessions`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/sessions`, {
         method: 'POST',
         data: credentials
     }).then(({data}) => {
@@ -20,23 +12,20 @@ export const userLogin = (credentials: UserFormFields) => {
 }
 
 export const userLogout = () => {
-    return axios(`${environment.API_URL}/sessions`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/sessions`, {
         method: 'DELETE'
     });
 }
 
 export const userSignUp = (credentials: UserFormFields) => {
-    return axios(`${environment.API_URL}/users`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/users`, {
         method: 'POST',
         data: credentials
     });
 }
 
 export const isLoggedIn = () => {
-    return axios(`${environment.API_URL}/is_logged_in`, {
-        ...httpHeader,
+    return axiosApiInstance(`${environment.API_URL}/is_logged_in`, {
         method: 'GET'
     }).then(({data}) => {
         if (!data) {
